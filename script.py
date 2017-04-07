@@ -30,6 +30,9 @@ perfil.click()
 
 sleep(2)
 
+nfollowers = chrome.find_element_by_xpath("//a[contains(@href,'/"+username+"/followers/')]/span[@class='_bkw5z']").get_attribute('innerHTML')
+nfollowing = chrome.find_element_by_xpath("//a[contains(@href,'/"+username+"/following/')]/span[@class='_bkw5z']").get_attribute('innerHTML')
+
 # abre popup dos seguidores
 followers_icon = chrome.find_element_by_xpath("//a[contains(@href,'/"+username+"/followers/')]")
 followers_icon.click()
@@ -40,7 +43,7 @@ popup_followers = chrome.find_element_by_xpath("//div[contains(@class,'_4gt3b')]
 popup_followers.click()
 
 #carrega todos os que me seguem
-for _ in range(0, 30):
+for i in range(10, int(nfollowers), 10):
     popup_followers.send_keys(Keys.PAGE_DOWN)
     popup_followers.send_keys(Keys.PAGE_DOWN)
     sleep(1)
@@ -48,7 +51,7 @@ for _ in range(0, 30):
 elements_followers = chrome.find_elements_by_xpath("//a[contains(@class,'_4zhc5')]")
 list_followers = map(lambda x: x.get_attribute('innerHTML'), elements_followers)
 
-print len(list_followers)
+assert len(list_followers) == int(nfollowers)
 
 bt_close = chrome.find_element_by_xpath("//div[@class='_quk42']")
 bt_close.send_keys(Keys.ESCAPE)
@@ -62,7 +65,7 @@ popup_following = chrome.find_element_by_xpath("//div[contains(@class,'_4gt3b')]
 popup_following.click()
 
 # carrega todos os que sigo
-for _ in range(0, 30):
+for i in range(10, int(nfollowing), 10):
     popup_following.send_keys(Keys.PAGE_DOWN)
     popup_following.send_keys(Keys.PAGE_DOWN)
     sleep(1)
@@ -70,8 +73,11 @@ for _ in range(0, 30):
 elements_following = chrome.find_elements_by_xpath("//a[contains(@class,'_4zhc5')]")
 list_following = map(lambda x: x.get_attribute('innerHTML'), elements_following)
 
+assert len(list_following) == int(nfollowing)
+
+non_followers = []
 for following in list_following:
     if following not in list_followers:
-        print following
+        non_followers.append(following)
 
-print len(list_following)
+print non_followers
