@@ -23,3 +23,6 @@ Instagram script using Python and Selenium to list who does not follow you back
   
   ```./script.py username password```
  
+  or
+  
+  ```python scripy.py username password```
