@@ -1,4 +1,6 @@
 ## Instagram Non-Followers
+![built with](https://img.shields.io/badge/Built%20with-Selenium-red.svg)
+![built with](https://img.shields.io/badge/Built%20with-Python%202.7-green.svg)
 
 Instagram script using Python and Selenium to list who does not follow you back
 
