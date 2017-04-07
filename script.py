@@ -1,14 +1,13 @@
 #!/usr/bin/python
 
 import sys
+import argparse
 from Instagram import Instagram
 
-if len(sys.argv) == 3:
-    username = sys.argv[1]
-    password = sys.argv[2]
+parser = argparse.ArgumentParser(description="Return people who dont follow you back on instagram")
+parser.add_argument("username", help="Your Instagram user")
+parser.add_argument("password", help="Your Instagram password")
+args = parser.parse_args()
 
-    instagram = Instagram(username, password)
-
-    instagram.get_non_followers()
-else:
-    print "USAGE:\n./script.py username password"
+instagram = Instagram(args.username, args.password)
+instagram.get_non_followers()
