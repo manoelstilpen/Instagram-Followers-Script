@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-import sys
 import argparse
 from Instagram import Instagram
 
