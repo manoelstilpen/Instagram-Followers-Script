@@ -45,8 +45,8 @@ class Instagram:
         self.__chrome.find_element_by_xpath("//a[contains(@class,'coreSpriteDesktopNavProfile')]").click()
         sleep(2)
 
-        self.__nfollowers = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/followers/')]/span[@class='_bkw5z']").get_attribute('innerHTML'))
-        self.__nfollowing = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/following/')]/span[@class='_bkw5z']").get_attribute('innerHTML'))
+        self.__nfollowers = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/followers/')]/span[@class='_fd86t']").get_attribute('innerHTML'))
+        self.__nfollowing = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/following/')]/span[@class='_fd86t']").get_attribute('innerHTML'))
 
     def get_followers(self):
 
