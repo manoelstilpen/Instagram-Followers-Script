@@ -55,11 +55,9 @@ class Instagram:
 
         popup_followers = self.__chrome.wait.until(EC.presence_of_element_located(
             (By.XPATH, "//div[contains(@class,'_gs38e')]")))
-
         popup_followers.click()
 
         followers_lenght = 0
-
         while followers_lenght < self.__nfollowers:
             popup_followers.send_keys(Keys.PAGE_DOWN)
             popup_followers.send_keys(Keys.PAGE_DOWN)
@@ -68,39 +66,43 @@ class Instagram:
 
         elements_followers = self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")
         self.__list_followers = map(lambda x: x.get_attribute('innerHTML'), elements_followers)
-        popup_followers.send_keys(Keys.ESCAPE)
 
         # testa se leu todos os seguidores
         assert len(self.__list_followers) == self.__nfollowers, 'Failed loading all followers'
 
-        # close pop up followers
-        self.__chrome.find_element_by_xpath("//div[@class='_quk42']").send_keys(Keys.ESCAPE)
+        # close pop up followers        
+        popup_followers.send_keys(Keys.ESCAPE)
 
     def get_following(self):
+
+        # abre pop-up das pessoas que segue
         self.__chrome.find_element_by_xpath("//a[contains(@href,'/"+self.__username+"/following/')]").click()
 
-        # self.__chrome.wait.until(EC.presence_of_element_located((By.XPATH, "//div[contains(@class,'_4gt3b')]")))
-        popup_following = self.__chrome.find_element_by_xpath("//div[contains(@class,'_4gt3b')]")
+        popup_following = self.__chrome.wait.until(EC.presence_of_element_located(
+            (By.XPATH, "//div[contains(@class,'_gs38e')]")))
         popup_following.click()
 
         following_lenght = 0
-        while following_lenght < self.__nfollowing-1:
+        while following_lenght < self.__nfollowing:
             popup_following.send_keys(Keys.PAGE_DOWN)
             popup_following.send_keys(Keys.PAGE_DOWN)
             following_lenght = len(map(lambda x: x.get_attribute('innerHTML'),
-                                       self.__chrome.find_elements_by_xpath("//a[contains(@class,'_4zhc5')]")))
-            print (str(following_lenght) + " " + str(self.__nfollowing))
+                                       self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")))
+#            print (str(following_lenght) + " " + str(self.__nfollowing))
 
-        elements_following = self.__chrome.find_elements_by_xpath("//a[contains(@class,'_4zhc5')]")
+        elements_following = self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")
         self.__list_following = map(lambda x: x.get_attribute('innerHTML'), elements_following)
 
-        assert len(self.__list_following) == self.__nfollowing-1, "Failed loading all following"
+        assert len(self.__list_following) == self.__nfollowing, "Failed loading all following"
 
-        self.__chrome.find_element_by_xpath("//div[@class='_dcj9f']").click()
+        popup_following.send_keys(Keys.ESCAPE)
+
     def get_non_followers(self):
         self.open_profile()
         self.get_followers()
         self.get_following()
+
+        self.__chrome.close()
 
         print "PEOPLE WHO DONT FOLLOW YOU BACK:"
         for following in self.__list_following:
