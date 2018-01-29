@@ -63,7 +63,7 @@ class Instagram:
             popup_followers.send_keys(Keys.PAGE_DOWN)
             followers_lenght = len(map(lambda x: x.get_attribute('innerHTML'),
                 self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")))
-
+            print (str(followers_lenght) + " " + str(self.__nfollowers))
         elements_followers = self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")
         self.__list_followers = map(lambda x: x.get_attribute('innerHTML'), elements_followers)
 
@@ -88,7 +88,7 @@ class Instagram:
             popup_following.send_keys(Keys.PAGE_DOWN)
             following_lenght = len(map(lambda x: x.get_attribute('innerHTML'),
                                        self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")))
-#            print (str(following_lenght) + " " + str(self.__nfollowing))
+            print (str(following_lenght) + " " + str(self.__nfollowing))
 
         elements_following = self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")
         self.__list_following = map(lambda x: x.get_attribute('innerHTML'), elements_following)
