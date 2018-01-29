@@ -1,3 +1,5 @@
+#coding: utf-8#coding: utf-8#coding: utf-8#coding: utf-8#coding: utf-8#coding: utf-8#coding: utf-8#coding: utf-8
+
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -22,7 +24,7 @@ class Instagram:
         assert "Instagram" in self.__chrome.title
 
         # log with an existent account
-        self.__chrome.wait.until(EC.presence_of_element_located((By.XPATH, "//a[@class='_fcn8k']"))).click()
+        self.__chrome.wait.until(EC.presence_of_element_located((By.LINK_TEXT, u'Faça login'))).click()
 
         name = self.__chrome.find_element_by_name("username")
         passw = self.__chrome.find_element_by_name("password")
@@ -80,16 +82,17 @@ class Instagram:
         popup_following.click()
 
         following_lenght = 0
-        while following_lenght < self.__nfollowing:
+        while following_lenght < self.__nfollowing-1:
             popup_following.send_keys(Keys.PAGE_DOWN)
             popup_following.send_keys(Keys.PAGE_DOWN)
             following_lenght = len(map(lambda x: x.get_attribute('innerHTML'),
                                        self.__chrome.find_elements_by_xpath("//a[contains(@class,'_4zhc5')]")))
+            print (str(following_lenght) + " " + str(self.__nfollowing))
 
         elements_following = self.__chrome.find_elements_by_xpath("//a[contains(@class,'_4zhc5')]")
         self.__list_following = map(lambda x: x.get_attribute('innerHTML'), elements_following)
 
-        assert len(self.__list_following) == self.__nfollowing, "Failed loading all following"
+        assert len(self.__list_following) == self.__nfollowing-1, "Failed loading all following"
 
         self.__chrome.find_element_by_xpath("//div[@class='_quk42']").send_keys(Keys.ESCAPE)
 
