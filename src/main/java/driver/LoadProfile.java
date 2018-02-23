@@ -3,6 +3,7 @@ package driver;
 import model.Instagram;
 import org.openqa.selenium.WebDriver;
 import pages.InitialPage;
+import pages.ProfilePage;
 
 public class LoadProfile {
 
@@ -13,8 +14,11 @@ public class LoadProfile {
      */
     public static Instagram load(WebDriver browser, Instagram profile){
 
-        new InitialPage(browser).clickDoLogin()
-        .doLogin("manoelstilpen", "123456");
+        ProfilePage page = new InitialPage(browser).clickDoLogin()
+        .doLogin(profile.username, profile.password).clickProfilePage();
+
+        profile.nFollowers = page.getNFollowers();
+        profile.nFollowing = page.getNFollowing();
 
         return profile;
     }
