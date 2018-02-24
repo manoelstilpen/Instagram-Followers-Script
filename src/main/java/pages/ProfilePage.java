@@ -3,8 +3,6 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.List;
-
 public class ProfilePage extends BasePage {
 
     public ProfilePage(WebDriver browser) {
@@ -21,11 +19,14 @@ public class ProfilePage extends BasePage {
                 (By.xpath("//a[contains(@href, 'followers')]/span[@class='_fd86t']")).getText());
     }
 
-    public FollowersPopUp clickFollowersPopUp(){
+    public PopUp clickFollowersPopUp(){
         browser.findElement(By.xpath("//a[contains(@href, 'followers')]")).click();
-        return new FollowersPopUp(browser);
+        return new PopUp(browser);
     }
 
 
-
+    public PopUp clickFollowingPopUp() {
+        browser.findElement(By.xpath("//a[contains(@href, 'following')]")).click();
+        return new PopUp(browser);
+    }
 }

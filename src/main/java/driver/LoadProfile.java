@@ -2,9 +2,7 @@ package driver;
 
 import model.Instagram;
 import org.openqa.selenium.WebDriver;
-import pages.FollowersPopUp;
-import pages.InitialPage;
-import pages.ProfilePage;
+import pages.*;
 
 import java.util.List;
 
@@ -17,15 +15,22 @@ public class LoadProfile {
      */
     public static Instagram load(WebDriver browser, Instagram profile){
 
-        ProfilePage page = new InitialPage(browser).clickDoLogin()
-        .doLogin(profile.username, profile.password).clickProfilePage();
+        ProfilePage profilePage = new InitialPage(browser)
+                .doLogin(profile.username, profile.password).clickProfilePage();
 
-        profile.nFollowers = page.getNFollowers();
-        profile.nFollowing = page.getNFollowing();
+        profile.nFollowers = profilePage.getNFollowers();
+        profile.nFollowing = profilePage.getNFollowing();
 
-        FollowersPopUp popupFollowers = page.clickFollowersPopUp();
-        List<String> followers = popupFollowers.getFollowers(profile.nFollowers);
+        PopUp popupFollowers = profilePage.clickFollowersPopUp();
+        List<String> followers = popupFollowers.getUsers(profile.nFollowers);
         popupFollowers.closePopUp();
+
+        PopUp popupFollowing = profilePage.clickFollowingPopUp();
+        List<String> following = popupFollowing.getUsers(profile.nFollowing);
+        popupFollowing.closePopUp();
+
+        profile.followers = followers;
+        profile.following = following;
 
         return profile;
     }

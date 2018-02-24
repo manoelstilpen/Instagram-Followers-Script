@@ -1,45 +1,49 @@
 package pages;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FollowersPopUp extends BasePage {
+public class PopUp extends BasePage {
 
-    private WebElement popup;
+    protected WebElement popup;
 
-    public FollowersPopUp(WebDriver browser) {
+    public PopUp(WebDriver browser) {
         super(browser);
 
         // focusing on popup
-        popup = (new WebDriverWait(browser, 10))
+        popup = (new WebDriverWait(browser, 20))
                 .until(ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//div[contains(@class,'_gs38e')]")
                 ));
 
         popup.click();
-
     }
 
-    public List<String> getFollowers(int nFollowers){
+    public List<String> getUsers(int nUsers){
 
         List<WebElement> userList = new ArrayList<WebElement>();
-        while (userList.size() < nFollowers){
+        while (userList.size() < nUsers){
 
             popup.sendKeys(Keys.PAGE_DOWN);
             popup.sendKeys(Keys.PAGE_DOWN);
 
             // returns a list with all users scrolled
-            userList = browser.findElements(By.xpath("//div[@class='_p4iax']//a[contains(@class,'_2g7d5')]"));
+            userList = browser.findElements(By.xpath("//ul[contains(@class,'_8q670')]//a[contains(@class,'_2g7d5')]"));
 
             try {
                 Thread.currentThread().sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            System.out.println(userList.size());
         }
 
         // converting WebElement to String
@@ -53,9 +57,7 @@ public class FollowersPopUp extends BasePage {
 
     public ProfilePage closePopUp(){
         popup.sendKeys(Keys.ESCAPE);
-
         return new ProfilePage(browser);
     }
-
 
 }
