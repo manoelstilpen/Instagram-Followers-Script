@@ -2,8 +2,11 @@ package driver;
 
 import model.Instagram;
 import org.openqa.selenium.WebDriver;
+import pages.FollowersPopUp;
 import pages.InitialPage;
 import pages.ProfilePage;
+
+import java.util.List;
 
 public class LoadProfile {
 
@@ -19,6 +22,10 @@ public class LoadProfile {
 
         profile.nFollowers = page.getNFollowers();
         profile.nFollowing = page.getNFollowing();
+
+        FollowersPopUp popupFollowers = page.clickFollowersPopUp();
+        List<String> followers = popupFollowers.getFollowers(profile.nFollowers);
+        popupFollowers.closePopUp();
 
         return profile;
     }

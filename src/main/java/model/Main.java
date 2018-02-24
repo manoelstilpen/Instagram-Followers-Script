@@ -10,7 +10,7 @@ public class Main {
 
         Instagram user = new Instagram("manoelstilpen", "123456");
 
-        WebDriver browser = Web.createChromeInstance();
+        WebDriver browser = Web.createFirefoxInstance();
 
         LoadProfile.load(browser, user);
 
