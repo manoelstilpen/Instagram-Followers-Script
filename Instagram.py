@@ -24,7 +24,7 @@ class Instagram:
         assert "Instagram" in self.__chrome.title
 
         # log with an existent account
-        self.__chrome.wait.until(EC.presence_of_element_located((By.LINK_TEXT, u'Faça login'))).click()
+        self.__chrome.wait.until(EC.presence_of_element_located((By.LINK_TEXT, u'Log in'))).click()
 
         name = self.__chrome.find_element_by_name("username")
         passw = self.__chrome.find_element_by_name("password")
@@ -45,8 +45,8 @@ class Instagram:
         self.__chrome.find_element_by_xpath("//a[contains(@class,'coreSpriteDesktopNavProfile')]").click()
         sleep(2)
 
-        self.__nfollowers = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/followers/')]/span[@class='_fd86t']").get_attribute('innerHTML'))
-        self.__nfollowing = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/following/')]/span[@class='_fd86t']").get_attribute('innerHTML'))
+        self.__nfollowers = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/followers/')]/span[@class='_fd86t ']").get_attribute('innerHTML'))
+        self.__nfollowing = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/following/')]/span[@class='_fd86t ']").get_attribute('innerHTML'))
 
     def get_followers(self):
 
