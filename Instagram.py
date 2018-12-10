@@ -42,11 +42,16 @@ class Instagram:
         sleep(3)
 
     def open_profile(self):
-        self.__chrome.find_element_by_xpath("//a[contains(@class,'coreSpriteDesktopNavProfile')]").click()
+
+        if self.__chrome.find_element_by_xpath("//div[contains(@class, 'piCib')]") is not None: # clicar em nao exibir notificacoes
+            self.__chrome.find_element_by_xpath("//button[contains(@class, 'HoLwm')]").click()
+
+
+        self.__chrome.find_element_by_xpath("//a[contains(@class,'coreSpriteDesktopNavProfile')]").click() # clicar no link para abrir perfil
         sleep(2)
 
-        self.__nfollowers = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/followers/')]/span[@class='_fd86t ']").get_attribute('innerHTML'))
-        self.__nfollowing = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/following/')]/span[@class='_fd86t ']").get_attribute('innerHTML'))
+        self.__nfollowers = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/followers/')]/span[@class='g47SY ']").get_attribute('innerHTML'))
+        self.__nfollowing = int(self.__chrome.find_element_by_xpath("//a[contains(@href,'/" + self.__username + "/following/')]/span[@class='g47SY ']").get_attribute('innerHTML'))
 
     def get_followers(self):
 
@@ -54,24 +59,25 @@ class Instagram:
         self.__chrome.find_element_by_xpath("//a[contains(@href,'/"+self.__username+"/followers/')]").click()
 
         popup_followers = self.__chrome.wait.until(EC.presence_of_element_located(
-            (By.XPATH, "//div[contains(@class,'_gs38e')]")))
+            (By.XPATH, "//div[contains(@class,'isgrP')]")))
         popup_followers.click()
-
+        sleep(2)
         followers_lenght = 0
         while followers_lenght < self.__nfollowers:
-            popup_followers.send_keys(Keys.PAGE_DOWN)
+#            popup_followers.send_keys(Keys.PAGE_DOWN)
             popup_followers.send_keys(Keys.PAGE_DOWN)
             followers_lenght = len(map(lambda x: x.get_attribute('innerHTML'),
-                self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")))
+                self.__chrome.find_elements_by_xpath("//a[contains(@class,'FPmhX')]")))
             print (str(followers_lenght) + " " + str(self.__nfollowers))
-        elements_followers = self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")
+            sleep(0.5)
+        elements_followers = self.__chrome.find_elements_by_xpath("//a[contains(@class,'FPmhX')]")
         self.__list_followers = map(lambda x: x.get_attribute('innerHTML'), elements_followers)
 
         # testa se leu todos os seguidores
         assert len(self.__list_followers) == self.__nfollowers, 'Failed loading all followers'
 
         # close pop up followers        
-        popup_followers.send_keys(Keys.ESCAPE)
+        self.__chrome.find_element_by_xpath("//div[contains(@class, 'pbNvD')]//button[contains(@class,'dCJp8')]").click() # clica no X do popup
 
     def get_following(self):
 
@@ -79,23 +85,26 @@ class Instagram:
         self.__chrome.find_element_by_xpath("//a[contains(@href,'/"+self.__username+"/following/')]").click()
 
         popup_following = self.__chrome.wait.until(EC.presence_of_element_located(
-            (By.XPATH, "//div[contains(@class,'_gs38e')]")))
+            (By.XPATH, "//div[contains(@class,'isgrP')]")))
         popup_following.click()
 
         following_lenght = 0
         while following_lenght < self.__nfollowing:
-            popup_following.send_keys(Keys.PAGE_DOWN)
+#            popup_following.send_keys(Keys.PAGE_DOWN)
             popup_following.send_keys(Keys.PAGE_DOWN)
             following_lenght = len(map(lambda x: x.get_attribute('innerHTML'),
-                                       self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")))
+                                       self.__chrome.find_elements_by_xpath("//a[contains(@class,'FPmhX')]")))
             print (str(following_lenght) + " " + str(self.__nfollowing))
+            sleep(0.5)
 
-        elements_following = self.__chrome.find_elements_by_xpath("//a[contains(@class,'2g7d5')]")
+        elements_following = self.__chrome.find_elements_by_xpath("//a[contains(@class,'FPmhX')]")
         self.__list_following = map(lambda x: x.get_attribute('innerHTML'), elements_following)
 
         assert len(self.__list_following) == self.__nfollowing, "Failed loading all following"
 
-        popup_following.send_keys(Keys.ESCAPE)
+        # close pop up followers        
+        self.__chrome.find_element_by_xpath("//div[contains(@class, 'pbNvD')]//button[contains(@class,'dCJp8')]").click() # clica no X do popup
+#        popup_following.send_keys(Keys.ESCAPE)
 
     def get_non_followers(self):
         self.open_profile()
